@@ -16,13 +16,15 @@ const vimeoInstance = axios.create({
   },
 });
 
-const fetchYoutubeDataById = (url) => youtubeInstance.get('/search', {
+const fetchYoutubeDataByUrl = (url) => youtubeInstance.get('/search', {
   params: {
     q: url,
+    maxResults: 1,
   },
 }).then((res) => {
-  console.log(res);
-});
+  const { videoId } = res.data.items[0].id;
+  return videoId;
+}).catch(() => 'something goes wrong');
 
 const fetchYoutubeDataAll = (urls) => youtubeInstance.get('/videos', {
   params: {
@@ -32,9 +34,18 @@ const fetchYoutubeDataAll = (urls) => youtubeInstance.get('/videos', {
   console.log(res);
 });
 
-const fetchVimeoData = (url) => vimeoInstance.get('/', {
+const fetchVimeoDataByUrl = (url) => vimeoInstance.get('/', {
   params: {
     links: url,
+  },
+}).then((res) => {
+  const { link } = res.data.data[0];
+  return link;
+}).catch(() => 'something goes wrong');
+
+const fetchVimeoDataAll = (urls) => vimeoInstance.get('/', {
+  params: {
+    links: urls,
   },
 }).then((res) => {
   console.log(res);
@@ -43,11 +54,12 @@ const fetchVimeoData = (url) => vimeoInstance.get('/', {
 const getApiClient = (api) => {
   const platforms = {
     youtube: () => ({
-      getById: fetchYoutubeDataById,
-      getData: fetchYoutubeDataAll,
+      getData: fetchYoutubeDataByUrl,
+      getAll: fetchYoutubeDataAll,
     }),
     vimeo: () => ({
-      getData: fetchVimeoData,
+      getData: fetchVimeoDataByUrl,
+      getAll: fetchVimeoDataAll,
     }),
   };
 
