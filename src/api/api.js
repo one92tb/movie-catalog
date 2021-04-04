@@ -5,7 +5,6 @@ const youtubeInstance = axios.create({
   params: {
     key: process.env.REACT_APP_YOUTUBE_ACCESS,
     part: 'snippet',
-    q: 'https://www.youtube.com/watch?v=mSi5ra_YeHc',
   },
 });
 
@@ -24,7 +23,7 @@ const fetchYoutubeDataByUrl = (url) => youtubeInstance.get('/search', {
 }).then((res) => {
   const { videoId } = res.data.items[0].id;
   return videoId;
-}).catch(() => 'something goes wrong');
+}).catch(() => 'something goes wrong - check your path');
 
 const fetchYoutubeDataAll = (data) => youtubeInstance.get('/videos', {
   params: {
@@ -55,7 +54,7 @@ const fetchVimeoDataByUrl = (url) => vimeoInstance.get('/', {
 }).then((res) => {
   const { link } = res.data.data[0];
   return link;
-}).catch(() => 'something goes wrong');
+}).catch(() => 'something goes wrong - check your path');
 
 const fetchVimeoDataAll = (data) => vimeoInstance.get('/', {
   params: {

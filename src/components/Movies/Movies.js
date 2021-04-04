@@ -1,14 +1,23 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
 
-const Movies = () => {
-  const [videoData, setVideoData] = useLocalStorage('videosData', []);
+const Movies = (props) => {
+  const { localStorageData } = props;
+  const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
 
+  useEffect(() => {
+    if (localStorageData.length > videosData.length) {
+      setVideosData(localStorageData);
+    }
+  }, [localStorageData, setVideosData, videosData.length]);
+
   const fetchData = useCallback(async () => {
+    setData([]);
     const platformData = async (platform) => {
-      const dataFromPlatform = videoData.filter((video) => video.platform === platform);
+      const dataFromPlatform = videosData.filter((video) => video.platform === platform);
       const url = dataFromPlatform.map((video) => video.path).join(',');
       const dates = dataFromPlatform.map((video) => video.date);
 
@@ -21,20 +30,33 @@ const Movies = () => {
       const resData = await client.getAll(platformData);
       return resData;
     };
-    const youtubeResult = await platformData('youtube');
-    const vimeoResult = await platformData('vimeo');
-    setData([...youtubeResult, ...vimeoResult]);
-  }, [videoData]);
+
+    const platforms = videosData
+      .map((video) => video.platform).filter((platform, id, arr) => id === arr.indexOf(platform));
+    platforms.forEach(async (platform) => {
+      const result = await platformData(platform);
+      setData((prevMovies) => ([...prevMovies, ...result]));
+    });
+  }, [videosData]);
 
   useEffect(() => {
     fetchData();
-  }, [videoData, fetchData]);
+  }, [videosData, fetchData]);
 
   return (
     <div>
-      {data.map((videoDetails) => <div>{videoDetails.title}</div>)}
+      {data.map((videoDetails) => <div key={videoDetails.date}>{videoDetails.date}</div>)}
     </div>
   );
 };
 
 export default Movies;
+
+Movies.defaultProps = {
+  localStorageData: [],
+};
+
+Movies.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  localStorageData: PropTypes.array,
+};

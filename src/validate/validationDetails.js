@@ -1,6 +1,6 @@
 const validateDetails = (url) => [{
   condition: /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(url),
-  link: url,
+  link: url.slice(url.length - 11),
   platform: 'youtube',
 },
 {
