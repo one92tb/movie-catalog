@@ -2,9 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
+import './style.css';
 
 const Movies = (props) => {
-  const { localStorageData } = props;
+  const { localStorageData, currentPage } = props;
   const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
 
@@ -45,7 +46,17 @@ const Movies = (props) => {
 
   return (
     <div>
-      {data.map((videoDetails) => <div key={videoDetails.date}>{videoDetails.date}</div>)}
+      <div>
+        {data.slice(
+          currentPage * 6,
+          (currentPage + 1) * 6,
+        )
+          .map((data) => (
+            <div className="data-slice" key={data.date}>
+              {data.title}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };
@@ -54,9 +65,11 @@ export default Movies;
 
 Movies.defaultProps = {
   localStorageData: [],
+  currentPage: 0,
 };
 
 Movies.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   localStorageData: PropTypes.array,
+  currentPage: PropTypes.number,
 };
