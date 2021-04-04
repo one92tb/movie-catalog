@@ -32,5 +32,6 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error'],
     'no-shadow': 'off',
     'no-unused-expressions': 'off',
+    'no-empty-function': 'off',
   },
 };

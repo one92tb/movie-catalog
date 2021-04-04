@@ -1,36 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import validate from '../../validate/validate';
 import getApiClient from '../../api/api';
+import useLocalStorage from '../../localStorage/localStorage';
 
 const Form = () => {
   const [link, setLink] = useState('');
   const [error, setError] = useState('');
-  const [videosData, setVideosData] = useState([]);
-
-  useEffect(() => {
-    const videosData = JSON.parse(localStorage.getItem('videoData'));
-    if (videosData) {
-      setVideosData(videosData);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('videoData', JSON.stringify(videosData));
-  }, [videosData]);
-
-  const addToLocalStorage = (path) => {
-    const videoData = {
-      path,
-      date: Date.now(),
-    };
-
-    setVideosData([...videosData, videoData]);
-  };
+  const [videosData, setVideosData] = useLocalStorage('videosData', []);
 
   const getVideoId = async (validationResult) => {
     const client = getApiClient(validationResult.platform);
     const result = await client.getData(validationResult.link);
-    (result === 'something goes wrong') ? setError(result) : addToLocalStorage(result);
+    const videoData = {
+      path: result,
+      date: Date.now(),
+      platform: validationResult.platform,
+    };
+    (result === 'something goes wrong') ? setError(result) : setVideosData([...videosData, videoData]);
   };
 
   const handleSubmit = (event) => {

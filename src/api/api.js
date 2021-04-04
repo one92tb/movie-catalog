@@ -3,7 +3,7 @@ import axios from 'axios';
 const youtubeInstance = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3',
   params: {
-    key: process.env.REACT_APP_API_KEY,
+    key: process.env.REACT_APP_YOUTUBE_ACCESS,
     part: 'snippet',
     q: 'https://www.youtube.com/watch?v=mSi5ra_YeHc',
   },
@@ -32,6 +32,7 @@ const fetchYoutubeDataAll = (urls) => youtubeInstance.get('/videos', {
   },
 }).then((res) => {
   console.log(res);
+  return res;
 });
 
 const fetchVimeoDataByUrl = (url) => vimeoInstance.get('/', {
@@ -47,9 +48,7 @@ const fetchVimeoDataAll = (urls) => vimeoInstance.get('/', {
   params: {
     links: urls,
   },
-}).then((res) => {
-  console.log(res);
-});
+}).then((res) => res);
 
 const getApiClient = (api) => {
   const platforms = {
