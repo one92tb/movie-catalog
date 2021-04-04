@@ -26,13 +26,26 @@ const fetchYoutubeDataByUrl = (url) => youtubeInstance.get('/search', {
   return videoId;
 }).catch(() => 'something goes wrong');
 
-const fetchYoutubeDataAll = (urls) => youtubeInstance.get('/videos', {
+const fetchYoutubeDataAll = (data) => youtubeInstance.get('/videos', {
   params: {
-    id: urls,
+    id: data.url,
+    part: 'snippet, statistics',
   },
 }).then((res) => {
-  console.log(res);
-  return res;
+  const resTable = [];
+  res.data.items.forEach((video, id) => {
+    const videoDetails = {
+      title: video.snippet.title,
+      viewCounts: video.statistics.viewCount,
+      likeCount: video.statistics.likeCount,
+      mediumThumbnail: video.snippet.thumbnails.high,
+      largeThumbnail: video.snippet.thumbnails.maxres,
+      date: data.dates[id],
+    };
+
+    resTable.push(videoDetails);
+  });
+  return resTable;
 });
 
 const fetchVimeoDataByUrl = (url) => vimeoInstance.get('/', {
@@ -44,11 +57,24 @@ const fetchVimeoDataByUrl = (url) => vimeoInstance.get('/', {
   return link;
 }).catch(() => 'something goes wrong');
 
-const fetchVimeoDataAll = (urls) => vimeoInstance.get('/', {
+const fetchVimeoDataAll = (data) => vimeoInstance.get('/', {
   params: {
-    links: urls,
+    links: data.url,
   },
-}).then((res) => res);
+}).then((res) => {
+  const resTable = [];
+  res.data.data.forEach((video, id) => {
+    const videoDetails = {
+      title: video.name,
+      viewCounts: video.stats.plays,
+      date: data.dates[id],
+      mediumThumbnail: video.pictures.sizes[3],
+      largeThumbnail: video.pictures.sizes[4],
+    };
+    resTable.push(videoDetails);
+  });
+  return resTable;
+});
 
 const getApiClient = (api) => {
   const platforms = {

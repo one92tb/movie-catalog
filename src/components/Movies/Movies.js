@@ -7,19 +7,33 @@ const Movies = () => {
   const [data, setData] = useState([]);
 
   const fetchData = useCallback(async () => {
-    const ytLinks = videoData.filter((video) => video.platform === 'youtube').map((video) => video.path).join(',');
-    const client = getApiClient('youtube');
-    const result = await client.getAll(ytLinks);
-    setData(result);
+    const platformData = async (platform) => {
+      const dataFromPlatform = videoData.filter((video) => video.platform === platform);
+      const url = dataFromPlatform.map((video) => video.path).join(',');
+      const dates = dataFromPlatform.map((video) => video.date);
+
+      const platformData = {
+        url,
+        dates,
+      };
+
+      const client = getApiClient(platform);
+      const resData = await client.getAll(platformData);
+      return resData;
+    };
+    const youtubeResult = await platformData('youtube');
+    const vimeoResult = await platformData('vimeo');
+    setData([...youtubeResult, ...vimeoResult]);
   }, [videoData]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [videoData, fetchData]);
 
-  console.log(setVideoData, data);
   return (
-    <div>test</div>
+    <div>
+      {data.map((videoDetails) => <div>{videoDetails.title}</div>)}
+    </div>
   );
 };
 
