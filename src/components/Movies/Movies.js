@@ -17,20 +17,27 @@ import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
 
 const Movies = (props) => {
-  const { localStorageData, currentPage, getModalData } = props;
+  const {
+    localStorageData, currentPage, getModalData, getFilteredData,
+  } = props;
   const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
   const [modalData, setModalData] = useState(false);
+  const [filteredData, setFilteredData] = useState(videosData);
 
   useEffect(() => {
     setModalData(modalData);
   }, []);
 
   useEffect(() => {
-    if (localStorageData.length > videosData.length) {
+    if (localStorageData.length !== videosData.length) {
       setVideosData(localStorageData);
     }
-  }, [localStorageData, setVideosData, videosData.length]);
+  }, [localStorageData]);
+
+  useEffect(() => {
+    getFilteredData(videosData);
+  }, [videosData]);
 
   const fetchData = useCallback(async () => {
     setData([]);
@@ -44,7 +51,6 @@ const Movies = (props) => {
         dates,
         platform,
       };
-
       const client = getApiClient(platform);
       const resData = await client.getAll(platformData);
       return resData;
@@ -52,15 +58,29 @@ const Movies = (props) => {
 
     const platforms = videosData
       .map((video) => video.platform).filter((platform, id, arr) => id === arr.indexOf(platform));
-    platforms.forEach(async (platform) => {
-      const result = await platformData(platform);
-      setData((prevMovies) => ([...prevMovies, ...result]));
+
+    const fetchApi = platforms.map((platform) => platformData(platform));
+
+    Promise.all(fetchApi).then((data) => {
+      const result = [];
+      data.forEach((table) => {
+        result.push(...table);
+      });
+      setData(result);
     });
   }, [videosData]);
 
   useEffect(() => {
     fetchData();
   }, [videosData, fetchData]);
+
+  const remove = (id) => {
+    const filteredMovies = videosData.filter((video) => video.date !== id);
+    setVideosData(filteredMovies);
+    setFilteredData(filteredMovies);
+    console.log(filteredData);
+    getFilteredData(filteredData);
+  };
 
   return (
     <div className="movies-container">
@@ -101,7 +121,7 @@ const Movies = (props) => {
                 {` ${new Date(data.date).toLocaleString().split(',')[0]}`}
               </span>
               <span>
-                <FontAwesomeIcon icon={faTrashAlt} />
+                <FontAwesomeIcon icon={faTrashAlt} onClick={() => remove(data.date)} />
               </span>
             </CardFooter>
           </Card>
@@ -116,6 +136,7 @@ Movies.defaultProps = {
   localStorageData: [],
   currentPage: 0,
   getModalData: () => ({}),
+  getFilteredData: () => [],
 };
 
 Movies.propTypes = {
@@ -131,4 +152,5 @@ Movies.propTypes = {
     }),
   ),
   getModalData: PropTypes.func,
+  getFilteredData: PropTypes.func,
 };

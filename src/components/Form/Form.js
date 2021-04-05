@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/forbid-prop-types */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -8,7 +10,7 @@ import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
 
 const Formular = (props) => {
-  const { getlocalStorageData } = props;
+  const { getlocalStorageData, filteredMovies } = props;
   const [link, setLink] = useState('');
   const [error, setError] = useState('');
   const [videosData, setVideosData] = useLocalStorage('videosData', []);
@@ -29,10 +31,10 @@ const Formular = (props) => {
   };
 
   const handleSubmit = (event) => {
-    setError('');
     event.preventDefault();
+    setError('');
     const validationResult = validate(link);
-    (!validationResult.link || videosData.some((video) => video.path === validationResult.link))
+    (!validationResult.link || filteredMovies.some((video) => video.path === validationResult.link))
       ? setError('your link is invalid or this video is already uploaded') : getVideoId(validationResult);
   };
 
@@ -56,8 +58,10 @@ export default Formular;
 
 Formular.defaultProps = {
   getlocalStorageData: () => [],
+  filteredMovies: [],
 };
 
 Formular.propTypes = {
   getlocalStorageData: PropTypes.func,
+  filteredMovies: PropTypes.array,
 };

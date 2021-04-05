@@ -40,7 +40,6 @@ const fetchYoutubeDataAll = (data) => youtubeInstance.get('/videos', {
       mediumThumbnail: video.snippet.thumbnails.high.url,
       largeThumbnail: video.snippet.thumbnails.maxres.url,
       date: data.dates[id],
-      url: video.id,
       platform: data.platform,
     };
 
