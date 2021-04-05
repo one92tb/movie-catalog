@@ -1,0 +1,20 @@
+.modal-dialog {
+    position: relative;
+    top: 170px;
+    right: 200px;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    overflow-y: auto;
+  }
+.modal-body {
+    padding: 0!important;
+    margin: 0!important;
+    height: 450px;
+}
+
+.modal-header{
+    justify-content: center!important;
+}
+
+

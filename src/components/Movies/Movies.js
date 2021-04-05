@@ -1,18 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Card, CardImg, CardTitle, CardFooter, CardHeader,
+  Card,
+  CardImg,
+  CardTitle,
+  CardFooter,
+  CardHeader,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faEye, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faClock, faEye, faThumbsUp, faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
 
 const Movies = (props) => {
-  const { localStorageData, currentPage } = props;
+  const { localStorageData, currentPage, getModalData } = props;
   const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
+  const [modalData, setModalData] = useState(false);
+
+  useEffect(() => {
+    setModalData(modalData);
+  }, []);
+
   useEffect(() => {
     if (localStorageData.length > videosData.length) {
       setVideosData(localStorageData);
@@ -29,6 +42,7 @@ const Movies = (props) => {
       const platformData = {
         url,
         dates,
+        platform,
       };
 
       const client = getApiClient(platform);
@@ -57,9 +71,20 @@ const Movies = (props) => {
         .map((data) => (
           <Card className="data-slice" key={data.date}>
             <CardHeader>
-              <CardTitle tag="h3">{data.title}</CardTitle>
+              <CardTitle tag="h4">{data.title}</CardTitle>
             </CardHeader>
-            <CardImg top width="100%" src={data.mediumThumbnail} alt="thubnail" />
+            <CardImg
+              top
+              width="100%"
+              src={data.mediumThumbnail}
+              alt="thubnail"
+              onClick={() => getModalData({
+                title: data.title,
+                url: data.url,
+                platform: data.platform,
+                isOpen: true,
+              })}
+            />
             <CardFooter className="text-muted">
               <span>
                 <FontAwesomeIcon icon={faEye} />
@@ -75,6 +100,9 @@ const Movies = (props) => {
                 <FontAwesomeIcon icon={faClock} />
                 {` ${new Date(data.date).toLocaleString().split(',')[0]}`}
               </span>
+              <span>
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </span>
             </CardFooter>
           </Card>
         ))}
@@ -87,10 +115,20 @@ export default Movies;
 Movies.defaultProps = {
   localStorageData: [],
   currentPage: 0,
+  getModalData: () => ({}),
 };
 
 Movies.propTypes = {
-  currentPage: PropTypes.number,
-  // eslint-disable-next-line react/forbid-prop-types
-  localStorageData: PropTypes.array,
+  currentPage: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  localStorageData: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string,
+      date: PropTypes.number,
+      platform: PropTypes.string,
+    }),
+  ),
+  getModalData: PropTypes.func,
 };

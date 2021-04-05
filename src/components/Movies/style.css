@@ -25,6 +25,11 @@
     justify-content: space-evenly;
 }
 
-.img-top{
+.card-img-top{
     height: 400px;
+}
+
+.fa-trash-alt:hover{
+    cursor: pointer;
+    color: red;
 }

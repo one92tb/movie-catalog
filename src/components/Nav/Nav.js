@@ -78,7 +78,12 @@ Nav.defaultProps = {
 };
 
 Nav.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  localStorageData: PropTypes.array,
+  localStorageData: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string,
+      date: PropTypes.number,
+      platform: PropTypes.string,
+    }),
+  ),
   getCurrentPage: PropTypes.func,
 };
