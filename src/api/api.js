@@ -37,8 +37,8 @@ const fetchYoutubeDataAll = (data) => youtubeInstance.get('/videos', {
       title: video.snippet.title,
       viewCounts: video.statistics.viewCount,
       likeCount: video.statistics.likeCount,
-      mediumThumbnail: video.snippet.thumbnails.high,
-      largeThumbnail: video.snippet.thumbnails.maxres,
+      mediumThumbnail: video.snippet.thumbnails.high.url,
+      largeThumbnail: video.snippet.thumbnails.maxres.url,
       date: data.dates[id],
     };
 
@@ -67,8 +67,8 @@ const fetchVimeoDataAll = (data) => vimeoInstance.get('/', {
       title: video.name,
       viewCounts: video.stats.plays,
       date: data.dates[id],
-      mediumThumbnail: video.pictures.sizes[3],
-      largeThumbnail: video.pictures.sizes[4],
+      mediumThumbnail: video.pictures.sizes[3].link,
+      largeThumbnail: video.pictures.sizes[4].link,
     };
     resTable.push(videoDetails);
   });

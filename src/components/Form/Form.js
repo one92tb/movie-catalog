@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Button, Form, Label, Input, FormGroup,
+} from 'reactstrap';
 import validate from '../../validate/validate';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
 
-const Form = (props) => {
+const Formular = (props) => {
   const { getlocalStorageData } = props;
   const [link, setLink] = useState('');
   const [error, setError] = useState('');
@@ -34,25 +37,27 @@ const Form = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="link">
-        <input
+    <Form onSubmit={handleSubmit}>
+      <FormGroup>
+        <Label htmlFor="link">link</Label>
+        <Input
           type="text"
           value={link}
+          placeholder={link}
           onChange={(e) => setLink(e.target.value)}
         />
-      </label>
-      <input id="link" type="submit" value="Submit" />
-      <span>{error}</span>
-    </form>
+        {error}
+      </FormGroup>
+      <Button>Submit</Button>
+    </Form>
   );
 };
-export default Form;
+export default Formular;
 
-Form.defaultProps = {
+Formular.defaultProps = {
   getlocalStorageData: () => [],
 };
 
-Form.propTypes = {
+Formular.propTypes = {
   getlocalStorageData: PropTypes.func,
 };

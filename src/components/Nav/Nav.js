@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import useLocalStorage from '../../localStorage/localStorage';
+import './style.css';
 
 const Nav = (props) => {
   const { localStorageData, getCurrentPage } = props;

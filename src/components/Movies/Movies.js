@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Card, CardImg, CardTitle, CardFooter, CardHeader,
+} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faEye, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
@@ -8,7 +13,6 @@ const Movies = (props) => {
   const { localStorageData, currentPage } = props;
   const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
-
   useEffect(() => {
     if (localStorageData.length > videosData.length) {
       setVideosData(localStorageData);
@@ -45,18 +49,35 @@ const Movies = (props) => {
   }, [videosData, fetchData]);
 
   return (
-    <div>
-      <div>
-        {data.slice(
-          currentPage * 6,
-          (currentPage + 1) * 6,
-        )
-          .map((data) => (
-            <div className="data-slice" key={data.date}>
-              {data.title}
-            </div>
-          ))}
-      </div>
+    <div className="movies-container">
+      {data.slice(
+        currentPage * 6,
+        (currentPage + 1) * 6,
+      )
+        .map((data) => (
+          <Card className="data-slice" key={data.date}>
+            <CardHeader>
+              <CardTitle tag="h3">{data.title}</CardTitle>
+            </CardHeader>
+            <CardImg top width="100%" src={data.mediumThumbnail} alt="thubnail" />
+            <CardFooter className="text-muted">
+              <span>
+                <FontAwesomeIcon icon={faEye} />
+                {` ${data.viewCounts}`}
+              </span>
+              {data.likeCount && (
+              <span>
+                <FontAwesomeIcon icon={faThumbsUp} />
+                {` ${data.likeCount}`}
+              </span>
+              )}
+              <span>
+                <FontAwesomeIcon icon={faClock} />
+                {` ${new Date(data.date).toLocaleString().split(',')[0]}`}
+              </span>
+            </CardFooter>
+          </Card>
+        ))}
     </div>
   );
 };
@@ -69,7 +90,7 @@ Movies.defaultProps = {
 };
 
 Movies.propTypes = {
+  currentPage: PropTypes.number,
   // eslint-disable-next-line react/forbid-prop-types
   localStorageData: PropTypes.array,
-  currentPage: PropTypes.number,
 };

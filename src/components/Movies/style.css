@@ -1,12 +1,30 @@
-  .pagination-wrapper {
-    overflow-x:auto;
-  }
-  
-  .pagination {
+.movies-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+.card{
+    width: 580px;
+    justify-content: space-around;
+}
+
+.card-title{
+    height: 80px;
+    display: flex;
     justify-content: center;
-    margin:30px;
-  }
-  
-  .data-slice {
-    margin-top: 15px;
-  }
+    align-items: center;
+}
+
+.data-slice {
+    margin: 40px auto 0 auto!important;
+}
+
+.card-footer{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.img-top{
+    height: 400px;
+}
