@@ -1,15 +1,14 @@
 import {
   Modal, ModalHeader, ModalFooter, ModalBody, Button,
 } from 'reactstrap';
-import PropTypes, { shape } from 'prop-types';
 import YouTube from 'react-youtube';
 import Vimeo from '@u-wave/react-vimeo';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import './style.css';
 
 const ModalVideo = (props) => {
   const { modalData, onClose } = props;
-
   const onReady = (event) => {
     event.target.pauseVideo();
   };
@@ -34,7 +33,7 @@ const ModalVideo = (props) => {
         <ModalBody>
           {modalData.platform === 'youtube'
             ? <YouTube videoId={modalData.url} opts={opts} onReady={onReady} />
-            : <Vimeo video={modalData.url} autoplay responsive />}
+            : <Vimeo video={modalData.url} autoplay heigth="400px" width="300px" responsive />}
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" type="submit" aria-label="modal" onClick={onClose}>close</Button>
@@ -48,21 +47,15 @@ const ModalVideo = (props) => {
 export default ModalVideo;
 
 ModalVideo.defaultProps = {
-  modalData: {
-    platform: 'youtube',
-    title: '',
-    url: '',
-  },
-  isOpen: false,
-  onClose: false,
+  modalData: () => [],
+  onClose: () => false,
 };
 
 ModalVideo.propTypes = {
-  modalData: shape({
-    title: PropTypes.title,
+  modalData: PropTypes.shape({
+    title: PropTypes.string,
+    isOpen: PropTypes.false,
     url: PropTypes.string,
-    plaftorm: PropTypes.string,
   }),
-  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
 };

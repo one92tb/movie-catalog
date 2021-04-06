@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
 
 const Nav = (props) => {
-  const { localStorageData, getCurrentPage } = props;
-  const [videosData, setVideosData] = useLocalStorage('videosData', []);
+  const { videosData, getCurrentPage } = props;
   const [currentPage, setCurrentPage] = useState(0);
   const pagesCount = Math.ceil(videosData.length / 6);
-
-  useEffect(() => {
-    if (localStorageData.length > videosData.length) {
-      setVideosData(localStorageData);
-    }
-  }, [localStorageData, setVideosData, videosData.length]);
 
   useEffect(() => {
     getCurrentPage(currentPage);
@@ -73,17 +65,16 @@ const Nav = (props) => {
 export default Nav;
 
 Nav.defaultProps = {
-  localStorageData: [],
+  videosData: [],
   getCurrentPage: () => 0,
 };
 
 Nav.propTypes = {
-  localStorageData: PropTypes.arrayOf(
-    PropTypes.shape({
-      path: PropTypes.string,
-      date: PropTypes.number,
-      platform: PropTypes.string,
-    }),
-  ),
+  videosData: PropTypes.arrayOf(PropTypes.shape({
+    date: PropTypes.number,
+    isFavorite: PropTypes.bool,
+    path: PropTypes.string,
+    platform: PropTypes.string,
+  })),
   getCurrentPage: PropTypes.func,
 };

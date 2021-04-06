@@ -4,19 +4,28 @@
     justify-content: space-between;
 }
 .card{
-    width: 580px;
-    justify-content: space-around;
+    width: 450px;
+    justify-content: space-between;
 }
 
 .card-title{
-    height: 80px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.card-horizontal{
+    width: 100%;
+    transition: 1s all;
+}
+
+.card-hide{
+    display: none;
+}
+
 .data-slice {
-    margin: 0px auto 0 auto!important;
+    margin: 0px auto 30px auto!important;
 }
 
 .card-footer{
@@ -25,7 +34,7 @@
 }
 
 .card-img-top{
-    height: 400px;
+    height: 300px;
 }
 
 .fa-trash-alt:hover{
@@ -35,11 +44,11 @@
 
 .fa-star:hover{
     cursor: pointer;
-    color: yellow;
+    color: purple;
 }
 
 .active-star{
-    color: yellow!important;
+    color: purple!important;
 }
 
 .spinner-container {

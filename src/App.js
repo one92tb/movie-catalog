@@ -8,16 +8,17 @@ import Movies from './components/Movies/Movies';
 import Nav from './components/Nav/Nav';
 import MyModal from './components/Modal/Modal';
 import Panel from './components/Panel/Panel';
+import useLocalStorage from './localStorage/localStorage';
 
 const App = () => {
-  const [localStorageData, setLocalStorageData] = useState([]);
-  const [currentPage, setCurrentPage] = useState('');
+  const [videosData, setVideosData] = useLocalStorage('videosData', []);
+  const [currentPage, setCurrentPage] = useState(0);
   const [modalData, setModalData] = useState({});
-  const [filteredMovies, setFilteredMovies] = useState([]);
-
-  const getlocalStorageData = (data) => {
-    setLocalStorageData(data);
-  };
+  const [panelData, setPanelData] = useState({
+    display: 'vertical',
+    favorite: 'all',
+    order: 'newest',
+  });
 
   const getCurrentPage = (index) => {
     setCurrentPage(index);
@@ -31,25 +32,28 @@ const App = () => {
     setModalData({ ...modalData, isOpen: false });
   };
 
-  const getFilteredData = (data) => {
-    setFilteredMovies(data);
-  };
-
   return (
     <div className="App">
-      <Formular getlocalStorageData={getlocalStorageData} filteredMovies={filteredMovies} />
+      <Formular videosData={videosData} setVideosData={setVideosData} />
       <Row>
-        <Col>
+        <Col md="10">
           <Movies
-            localStorageData={localStorageData}
+            videosData={videosData}
+            setVideosData={setVideosData}
             currentPage={currentPage}
+            panelData={panelData}
             getModalData={getModalData}
-            getFilteredData={getFilteredData}
           />
         </Col>
-        <Panel />
+        <Col md="2">
+          <Panel
+            getPanelData={setPanelData}
+            videosData={videosData}
+            setVideosData={setVideosData}
+          />
+        </Col>
       </Row>
-      <Nav localStorageData={localStorageData} getCurrentPage={getCurrentPage} />
+      <Nav videosData={videosData} getCurrentPage={getCurrentPage} />
       <MyModal
         modalData={modalData}
         onClose={onClose}

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -13,36 +12,31 @@ import {
   faClock, faEye, faStar, faTrashAlt, faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import getApiClient from '../../api/api';
-import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
 
 const Movies = (props) => {
   const {
-    localStorageData, currentPage, getModalData, getFilteredData,
+    videosData, setVideosData, currentPage, panelData, getModalData,
   } = props;
-  const [videosData, setVideosData] = useLocalStorage('videosData', []);
   const [data, setData] = useState([]);
-  const [modalData, setModalData] = useState(false);
-  const [filteredData, setFilteredData] = useState(videosData);
   const [loading, setLoading] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    display: 'vertical',
+    favorite: 'all',
+    order: 'newest',
+  });
 
   useEffect(() => {
-    setModalData(modalData);
-  }, []);
-
-  useEffect(() => {
-    if (localStorageData.length !== videosData.length) {
-      setVideosData(localStorageData);
-    }
-  }, [localStorageData]);
-
-  useEffect(() => {
-    getFilteredData(videosData);
-  }, [videosData]);
+    setInputValues({
+      display: panelData.display,
+      favorite: panelData.favorite,
+      order: panelData.order,
+    });
+  }, [panelData]);
 
   const fetchData = useCallback(async () => {
-    setData([]);
     setLoading(true);
+
     const platformData = async (platform) => {
       const dataFromPlatform = videosData.filter((video) => video.platform === platform);
       const url = dataFromPlatform.map((video) => video.path).join(',');
@@ -55,6 +49,7 @@ const Movies = (props) => {
         platform,
         isFavorite,
       };
+
       const client = getApiClient(platform);
       const resData = await client.getAll(platformData);
       return resData;
@@ -71,7 +66,8 @@ const Movies = (props) => {
         result.push(...table);
       });
       setLoading(false);
-      setData(result);
+      const sortedData = result.sort((a, b) => a.date - b.date);
+      setData(sortedData);
     });
   }, [videosData]);
 
@@ -82,75 +78,79 @@ const Movies = (props) => {
   const remove = (id) => {
     const filteredMovies = videosData.filter((video) => video.date !== id);
     setVideosData(filteredMovies);
-    setFilteredData(filteredMovies);
-    getFilteredData(filteredData);
   };
-
+  console.log(videosData);
   const addFavorite = (id) => {
-    const setFavorite = videosData.map((video) => {
+    const getFavorites = videosData.map((video) => {
       if (video.date === id) {
         return { ...video, isFavorite: !video.isFavorite };
       }
       return video;
     });
-    setVideosData(setFavorite);
+    setVideosData(getFavorites);
+  };
+
+  const displayData = () => {
+    const currentData = data;
+    const sorted = ((inputValues.order === 'oldest') ? currentData.sort((a, b) => b.date - a.date) : currentData.sort((a, b) => a.date - b.date));
+    const displayData = sorted.filter((movie) => (((inputValues.favorite === 'favorite')) ? movie.isFavorite : movie));
+    return displayData;
   };
 
   return (
     <div className="movies-container">
       {loading ? <div className="spinner-container">...LOADING</div>
-        : data.slice(
+        : displayData().slice(
           currentPage * 6,
           (currentPage + 1) * 6,
-        )
-          .map((data) => (
-            <Card className="data-slice" key={data.date}>
-              <CardHeader>
-                <CardTitle tag="h4">{data.title}</CardTitle>
-              </CardHeader>
-              <CardImg
-                top
-                width="100%"
-                src={data.mediumThumbnail}
-                alt="thubnail"
-                onClick={() => getModalData({
-                  title: data.title,
-                  url: data.url,
-                  platform: data.platform,
-                  isOpen: true,
-                })}
-              />
-              <CardFooter className="text-muted">
-                <span>
-                  <FontAwesomeIcon icon={faEye} />
-                  {` ${data.viewCounts}`}
-                </span>
-                {data.likeCount && (
+        ).map((data) => (
+          <Card className={`data-slice ${inputValues.display === 'vertical' ? 'card-horizontal' : ''}`} key={data.date}>
+            <CardHeader>
+              <CardTitle tag="h4">{data.title}</CardTitle>
+            </CardHeader>
+            <CardImg
+              top
+              width="100%"
+              src={data.mediumThumbnail}
+              alt="thubnail"
+              onClick={() => getModalData({
+                title: data.title,
+                url: data.url,
+                platform: data.platform,
+                isOpen: true,
+              })}
+            />
+            <CardFooter className="text-muted">
+              <span>
+                <FontAwesomeIcon icon={faEye} />
+                {` ${data.viewCounts}`}
+              </span>
+              {data.likeCount && (
                 <span>
                   <FontAwesomeIcon icon={faThumbsUp} />
                   {` ${data.likeCount}`}
                 </span>
-                )}
-                <span>
-                  <FontAwesomeIcon icon={faClock} />
-                  {` ${new Date(data.date).toLocaleString().split(',')[0]}`}
-                </span>
-                <span>
-                  <FontAwesomeIcon
-                    icon={faTrashAlt}
-                    onClick={() => remove(data.date)}
-                  />
-                </span>
-                <span>
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    className={`${data.isFavorite ? 'active-star' : ''}`}
-                    onClick={() => addFavorite(data.date)}
-                  />
-                </span>
-              </CardFooter>
-            </Card>
-          ))}
+              )}
+              <span>
+                <FontAwesomeIcon icon={faClock} />
+                {` ${new Date(data.date).toLocaleString().split(',')[0]}`}
+              </span>
+              <span>
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  onClick={() => remove(data.date)}
+                />
+              </span>
+              <span>
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className={`${data.isFavorite ? 'active-star' : ''}`}
+                  onClick={() => addFavorite(data.date)}
+                />
+              </span>
+            </CardFooter>
+          </Card>
+        ))}
     </div>
   );
 };
@@ -158,24 +158,30 @@ const Movies = (props) => {
 export default Movies;
 
 Movies.defaultProps = {
-  localStorageData: [],
+  videosData: () => [],
+  setVideosData: () => [],
   currentPage: 0,
+  panelData: {
+    display: 'vertical',
+    favorite: 'all',
+    order: 'newest',
+  },
   getModalData: () => ({}),
-  getFilteredData: () => [],
 };
 
 Movies.propTypes = {
-  currentPage: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  localStorageData: PropTypes.arrayOf(
-    PropTypes.shape({
-      path: PropTypes.string,
-      date: PropTypes.number,
-      platform: PropTypes.string,
-    }),
-  ),
+  videosData: PropTypes.arrayOf(PropTypes.shape({
+    date: PropTypes.number,
+    isFavorite: PropTypes.bool,
+    path: PropTypes.numberstring,
+    platform: PropTypes.string,
+  })),
+  setVideosData: PropTypes.func,
+  currentPage: PropTypes.number,
+  panelData: PropTypes.shape({
+    display: PropTypes.string,
+    favorite: PropTypes.string,
+    order: PropTypes.string,
+  }),
   getModalData: PropTypes.func,
-  getFilteredData: PropTypes.func,
 };

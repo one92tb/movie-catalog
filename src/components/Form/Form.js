@@ -1,24 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/forbid-prop-types */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button, Form, Label, Input, FormGroup,
 } from 'reactstrap';
 import validate from '../../validate/validate';
 import getApiClient from '../../api/api';
-import useLocalStorage from '../../localStorage/localStorage';
 import './style.css';
 
 const Formular = (props) => {
-  const { getlocalStorageData, filteredMovies } = props;
+  const { videosData, setVideosData } = props;
   const [link, setLink] = useState('');
   const [error, setError] = useState('');
-  const [videosData, setVideosData] = useLocalStorage('videosData', []);
-
-  useEffect(() => {
-    getlocalStorageData(videosData);
-  }, [getlocalStorageData, videosData]);
 
   const getVideoId = async (validationResult) => {
     const client = getApiClient(validationResult.platform);
@@ -36,7 +28,7 @@ const Formular = (props) => {
     event.preventDefault();
     setError('');
     const validationResult = validate(link);
-    (!validationResult.link || filteredMovies.some((video) => video.path === validationResult.link))
+    (!validationResult.link || videosData.some((video) => video.path === validationResult.link))
       ? setError('your link is invalid or this video is already uploaded') : getVideoId(validationResult);
   };
 
@@ -59,11 +51,16 @@ const Formular = (props) => {
 export default Formular;
 
 Formular.defaultProps = {
-  getlocalStorageData: () => [],
-  filteredMovies: [],
+  videosData: () => [],
+  setVideosData: () => [],
 };
 
 Formular.propTypes = {
-  getlocalStorageData: PropTypes.func,
-  filteredMovies: PropTypes.array,
+  videosData: PropTypes.arrayOf(PropTypes.shape({
+    date: PropTypes.number,
+    isFavorite: PropTypes.bool,
+    path: PropTypes.numberstring,
+    platform: PropTypes.string,
+  })),
+  setVideosData: PropTypes.func,
 };
