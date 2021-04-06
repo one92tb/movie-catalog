@@ -41,6 +41,7 @@ const fetchYoutubeDataAll = (data) => youtubeInstance.get('/videos', {
       largeThumbnail: video.snippet.thumbnails.maxres.url,
       date: data.dates[id],
       platform: data.platform,
+      isFavorite: data.isFavorite[id],
     };
 
     resTable.push(videoDetails);
@@ -72,6 +73,7 @@ const fetchVimeoDataAll = (data) => vimeoInstance.get('/', {
       largeThumbnail: video.pictures.sizes[4].link,
       url: video.link,
       platform: data.platform,
+      isFavorite: data.isFavorite[id],
     };
     resTable.push(videoDetails);
   });

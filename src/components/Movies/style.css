@@ -33,3 +33,18 @@
     cursor: pointer;
     color: red;
 }
+
+.fa-star:hover{
+    cursor: pointer;
+    color: yellow;
+}
+
+.active-star{
+    color: yellow!important;
+}
+
+.spinner-container {
+    width: 500px;
+    margin: 40px auto;
+    font-size: 50px;
+}

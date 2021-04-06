@@ -26,6 +26,7 @@ const Formular = (props) => {
       path: result,
       date: Date.now(),
       platform: validationResult.platform,
+      isFavorite: false,
     };
     (result === 'something goes wrong - check your path') ? setError(result) : setVideosData([...videosData, videoData]);
   };
