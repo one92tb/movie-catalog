@@ -8,6 +8,7 @@ import {
 import validate from '../../validate/validate';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
+import './style.css';
 
 const Formular = (props) => {
   const { getlocalStorageData, filteredMovies } = props;
@@ -40,7 +41,7 @@ const Formular = (props) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="form">
       <FormGroup>
         <Label htmlFor="link">link</Label>
         <Input

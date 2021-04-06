@@ -2,7 +2,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 30px;
 }
 .card{
     width: 580px;
@@ -17,7 +16,7 @@
 }
 
 .data-slice {
-    margin: 40px auto 0 auto!important;
+    margin: 0px auto 0 auto!important;
 }
 
 .card-footer{

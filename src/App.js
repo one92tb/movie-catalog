@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
+import {
+  Col, Row,
+} from 'reactstrap';
 import Formular from './components/Form/Form';
 import Movies from './components/Movies/Movies';
 import Nav from './components/Nav/Nav';
 import MyModal from './components/Modal/Modal';
+import Panel from './components/Panel/Panel';
 
 const App = () => {
   const [localStorageData, setLocalStorageData] = useState([]);
@@ -34,12 +38,17 @@ const App = () => {
   return (
     <div className="App">
       <Formular getlocalStorageData={getlocalStorageData} filteredMovies={filteredMovies} />
-      <Movies
-        localStorageData={localStorageData}
-        currentPage={currentPage}
-        getModalData={getModalData}
-        getFilteredData={getFilteredData}
-      />
+      <Row>
+        <Col>
+          <Movies
+            localStorageData={localStorageData}
+            currentPage={currentPage}
+            getModalData={getModalData}
+            getFilteredData={getFilteredData}
+          />
+        </Col>
+        <Panel />
+      </Row>
       <Nav localStorageData={localStorageData} getCurrentPage={getCurrentPage} />
       <MyModal
         modalData={modalData}

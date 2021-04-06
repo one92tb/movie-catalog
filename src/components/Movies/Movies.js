@@ -10,9 +10,7 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // eslint-disable-next-line no-unused-vars
-  faClock, faEye, faStar, faStarHalfAlt, faThumbsUp, faTrashAlt,
+  faClock, faEye, faStar, faTrashAlt, faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import getApiClient from '../../api/api';
 import useLocalStorage from '../../localStorage/localStorage';
@@ -95,7 +93,6 @@ const Movies = (props) => {
       }
       return video;
     });
-    console.log(setFavorite);
     setVideosData(setFavorite);
   };
 
