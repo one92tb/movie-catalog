@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import PropTypes from 'prop-types';
 import './style.css';
+import { VideosData } from '../../interfaces/videoData';
 
-const Nav = (props) => {
+interface Props {
+  videosData: VideosData[],
+  getCurrentPage: (value:number) => void,
+}
+
+const Nav: React.FC<Props> = (props) => {
   const { videosData, getCurrentPage } = props;
   const [currentPage, setCurrentPage] = useState(0);
   const pagesCount = Math.ceil(videosData.length / 6);
@@ -12,7 +17,7 @@ const Nav = (props) => {
     getCurrentPage(currentPage);
   }, [currentPage, getCurrentPage]);
 
-  const handleClick = (e, index) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, index: React.SetStateAction<number>) => {
     e.preventDefault();
     setCurrentPage(index);
   };
@@ -63,18 +68,3 @@ const Nav = (props) => {
 };
 
 export default Nav;
-
-Nav.defaultProps = {
-  videosData: [],
-  getCurrentPage: () => 0,
-};
-
-Nav.propTypes = {
-  videosData: PropTypes.arrayOf(PropTypes.shape({
-    date: PropTypes.number,
-    isFavorite: PropTypes.bool,
-    path: PropTypes.string,
-    platform: PropTypes.string,
-  })),
-  getCurrentPage: PropTypes.func,
-};

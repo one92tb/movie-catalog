@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Button, Form, FormGroup, Label, Input,
 } from 'reactstrap';
 import './style.css';
+import { VideosData } from '../../interfaces/videoData';
 
-const Panel = (props) => {
+interface inputValues {
+  display: string,
+  favorite: string,
+  order: string,
+}
+
+interface Props {
+  getPanelData: (value: inputValues) => void,
+  setVideosData: (value: VideosData[]) => void,
+}
+
+const Panel: React.FC<Props> = (props) => {
   const { getPanelData, setVideosData } = props;
   const [inputValues, setInputValues] = useState({
     display: 'vertical',
@@ -17,7 +28,7 @@ const Panel = (props) => {
     getPanelData(inputValues);
   }, [getPanelData, inputValues]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [event.target.name]: event.target.value });
   };
 
@@ -55,13 +66,3 @@ const Panel = (props) => {
 };
 
 export default Panel;
-
-Panel.defaultProps = {
-  getPanelData: () => ({}),
-  setVideosData: () => [],
-};
-
-Panel.propTypes = {
-  getPanelData: PropTypes.func,
-  setVideosData: PropTypes.func,
-};

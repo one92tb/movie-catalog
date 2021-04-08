@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardImg,
@@ -11,16 +10,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClock, faEye, faStar, faTrashAlt, faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
-import getApiClient from '../../api/api';
 import './style.css';
+import { getApiClients } from '../../api/api';
+import { VideosData } from '../../interfaces/videoData';
+import { PanelData } from '../../interfaces/panelData';
+import { ModalData } from '../../interfaces/modalData';
+import { Data } from '../../interfaces/fetchData';
+import { InputValues } from '../../interfaces/inputValues';
 
-const Movies = (props) => {
+interface Props {
+  videosData: VideosData[],
+  currentPage: number,
+  panelData: PanelData,
+  setVideosData: (value: VideosData[]) => void,
+  getModalData: (value: ModalData) => void,
+}
+
+const Movies: React.FC<Props> = (props) => {
   const {
     videosData, setVideosData, currentPage, panelData, getModalData,
   } = props;
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [inputValues, setInputValues] = useState({
+  const [data, setData] = useState<Data[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [inputValues, setInputValues] = useState<InputValues>({
     display: 'vertical',
     favorite: 'all',
     order: 'newest',
@@ -37,8 +49,9 @@ const Movies = (props) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
 
-    const platformData = async (platform) => {
-      const dataFromPlatform = videosData.filter((video) => video.platform === platform);
+    const platformData = async (platform: string) => {
+      const dataFromPlatform = videosData
+        .filter((video) => video.platform === platform);
       const url = dataFromPlatform.map((video) => video.path).join(',');
       const dates = dataFromPlatform.map((video) => video.date);
       const isFavorite = dataFromPlatform.map((video) => video.isFavorite);
@@ -50,7 +63,7 @@ const Movies = (props) => {
         isFavorite,
       };
 
-      const client = getApiClient(platform);
+      const client = getApiClients[platform];
       const resData = await client.getAll(platformData);
       return resData;
     };
@@ -61,7 +74,7 @@ const Movies = (props) => {
     const fetchApi = platforms.map((platform) => platformData(platform));
 
     Promise.all(fetchApi).then((data) => {
-      const result = [];
+      const result: Data[] = [];
       data.forEach((table) => {
         result.push(...table);
       });
@@ -75,12 +88,12 @@ const Movies = (props) => {
     fetchData();
   }, [videosData, fetchData]);
 
-  const remove = (id) => {
+  const remove = (id: number) => {
     const filteredMovies = videosData.filter((video) => video.date !== id);
     setVideosData(filteredMovies);
   };
-  console.log(videosData);
-  const addFavorite = (id) => {
+
+  const addFavorite = (id: number) => {
     const getFavorites = videosData.map((video) => {
       if (video.date === id) {
         return { ...video, isFavorite: !video.isFavorite };
@@ -92,7 +105,8 @@ const Movies = (props) => {
 
   const displayData = () => {
     const currentData = data;
-    const sorted = ((inputValues.order === 'oldest') ? currentData.sort((a, b) => b.date - a.date) : currentData.sort((a, b) => a.date - b.date));
+    const sorted = ((inputValues.order === 'oldest')
+      ? currentData.sort((a, b) => a.date - b.date) : currentData.sort((a, b) => b.date - a.date));
     const displayData = sorted.filter((movie) => (((inputValues.favorite === 'favorite')) ? movie.isFavorite : movie));
     return displayData;
   };
@@ -156,32 +170,3 @@ const Movies = (props) => {
 };
 
 export default Movies;
-
-Movies.defaultProps = {
-  videosData: () => [],
-  setVideosData: () => [],
-  currentPage: 0,
-  panelData: {
-    display: 'vertical',
-    favorite: 'all',
-    order: 'newest',
-  },
-  getModalData: () => ({}),
-};
-
-Movies.propTypes = {
-  videosData: PropTypes.arrayOf(PropTypes.shape({
-    date: PropTypes.number,
-    isFavorite: PropTypes.bool,
-    path: PropTypes.numberstring,
-    platform: PropTypes.string,
-  })),
-  setVideosData: PropTypes.func,
-  currentPage: PropTypes.number,
-  panelData: PropTypes.shape({
-    display: PropTypes.string,
-    favorite: PropTypes.string,
-    order: PropTypes.string,
-  }),
-  getModalData: PropTypes.func,
-};

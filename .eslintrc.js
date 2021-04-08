@@ -10,6 +10,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'airbnb',
     'airbnb/hooks',
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,6 +21,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: 'module',
+    project: './tsconfig.json',
   },
   plugins: [
     'react',
@@ -27,11 +31,17 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    "@typescript-eslint/no-unused-vars": ["error"],
     'no-shadow': 'off',
     'no-unused-expressions': 'off',
+    'import/extensions': 'off',
     'no-empty-function': 'off',
+    "no-unused-vars": "off",
+    'max-len': ["error", { "code": 120 }],
+    "react/prop-types": 0,
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
 };
