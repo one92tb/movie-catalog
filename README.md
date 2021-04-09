@@ -14,7 +14,7 @@
 
 ## General info 
 
-Simple app to store videos. Currently handle only 2 platforms: youtube and vimeo. User can filter by favorites and change order from newest to oldest and vice versa. Application has demo version. After all user can remove all movies from database. 
+Simple app to store videos. Currently handles only 2 platforms: youtube and vimeo. User can filter by favorites and change order from newest to oldest and vice versa. Application has demo version. After all user can remove all movies from database. 
 
 ## Setup
 To run this project, install it locally using (create .env files for api keys):
