@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable max-len */
 export type ValidationResult = {
   condition: boolean,
-  link: string,
+  link : string,
   platform: string,
 }
 
 const validateDetails = (url: string):ValidationResult[] => [{
-  // eslint-disable-next-line max-len
-  condition: /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(url),
-  link: url.slice(url.length - 11),
+  condition: (/(.+?)(\/)(watch\x3Fv=)?(embed\/watch\x3Ffeature=player_embedded\x26v=)?([a-zA-Z0-9_-]{11})+/gm).test(url),
+  link: url.replace(/(.+?)(\/)(watch\x3Fv=)?(embed\/watch\x3Ffeature=player_embedded\x26v=)?/gm, ''),
   platform: 'youtube',
 },
 {
@@ -16,8 +17,8 @@ const validateDetails = (url: string):ValidationResult[] => [{
   platform: 'youtube',
 },
 {
-  condition: /^(http:\/\/|https:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/.test(url),
-  link: url,
+  condition: /(http|https)?:\/\/(www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/.test(url),
+  link: url.replace(/(http|https)?(?:channels\/(?:\w+\/)|groups\/([^/]*))/, ''),
   platform: 'vimeo',
 },
 {
