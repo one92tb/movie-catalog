@@ -63,7 +63,6 @@ const Movies: React.FC<Props> = (props) => {
         platform,
         isFavorite,
       };
-      console.log(platformData);
       const client = getApiClients[platform];
       const resData = await client.getAll(platformData);
       return resData;

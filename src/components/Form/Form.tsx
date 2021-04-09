@@ -59,10 +59,10 @@ const Formular: React.FC<Props> = (props) => {
           name="link"
           type="text"
           value={link}
-          placeholder={link}
           onChange={(e) => setLink(e.target.value)}
+          placeholder="put a link to the input to add a video..."
         />
-        {error}
+        <span className="error-message">{error}</span>
       </FormGroup>
       <Button>Submit</Button>
     </Form>
