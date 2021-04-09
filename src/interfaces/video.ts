@@ -1,7 +1,5 @@
 interface YouTubeItem {
-    id: {
-      videoId: string,
-    }
+    id: string,
     snippet: {
       title: string;
       thumbnails: {
@@ -40,7 +38,6 @@ export interface Video {
   viewCounts: number;
   date: number;
   mediumThumbnail: string;
-  largeThumbnail: string;
   url: string;
   platform: string;
   isFavorite: boolean;

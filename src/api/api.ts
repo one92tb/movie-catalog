@@ -44,11 +44,10 @@ const fetchYoutubeDataAll = async (data: PlatformData) => {
   });
   return res.data.items.map((video, index) => ({
     title: video.snippet.title,
-    url: video.id.videoId,
+    url: video.id,
     viewCounts: video.statistics.viewCount,
     likeCount: video.statistics.likeCount,
     mediumThumbnail: video.snippet.thumbnails.high.url,
-    largeThumbnail: video.snippet.thumbnails.maxres.url,
     date: data.dates[index],
     platform: data.platform,
     isFavorite: data.isFavorite[index],

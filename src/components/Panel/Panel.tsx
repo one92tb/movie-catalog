@@ -4,6 +4,7 @@ import {
 } from 'reactstrap';
 import './style.css';
 import { VideosData } from '../../interfaces/videoData';
+import { demo } from '../../demo/demo';
 
 interface inputValues {
   display: string,
@@ -36,6 +37,10 @@ const Panel: React.FC<Props> = (props) => {
     setVideosData([]);
   };
 
+  const loadDemo = () => {
+    setVideosData(demo);
+  };
+
   return (
     <Form>
       <FormGroup>
@@ -59,7 +64,7 @@ const Panel: React.FC<Props> = (props) => {
           <option>oldest</option>
         </Input>
       </FormGroup>
-      <Button color="secondary" className="panel-btn">Load demo</Button>
+      <Button color="secondary" onClick={loadDemo} className="panel-btn">Load demo</Button>
       <Button color="danger" onClick={removeAllData} className="panel-btn">Remove all</Button>
     </Form>
   );

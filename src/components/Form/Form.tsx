@@ -23,7 +23,6 @@ const Formular: React.FC<Props> = (props) => {
     setError('');
     const validationResult = validate(link);
     if (validationResult) {
-      console.log(validationResult.link);
       if (
         !validationResult.link
         || videosData.some((video) => video.path === validationResult.link)

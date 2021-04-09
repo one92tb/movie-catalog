@@ -5,6 +5,7 @@ import {
   CardTitle,
   CardFooter,
   CardHeader,
+  CardBody,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -122,18 +123,20 @@ const Movies: React.FC<Props> = (props) => {
             <CardHeader>
               <CardTitle tag="h4">{data.title}</CardTitle>
             </CardHeader>
-            <CardImg
-              top
-              width="100%"
-              src={data.mediumThumbnail}
-              alt="thubnail"
-              onClick={() => getModalData({
-                title: data.title,
-                url: data.url,
-                platform: data.platform,
-                isOpen: true,
-              })}
-            />
+            <CardBody className={`${inputValues.display === 'vertical' ? '' : 'card-body-horizontal'}`}>
+              <CardImg
+                top
+                width="100%"
+                src={data.mediumThumbnail}
+                alt="thubnail"
+                onClick={() => getModalData({
+                  title: data.title,
+                  url: data.url,
+                  platform: data.platform,
+                  isOpen: true,
+                })}
+              />
+            </CardBody>
             <CardFooter className="text-muted">
               <span>
                 <FontAwesomeIcon icon={faEye} />
