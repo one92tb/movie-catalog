@@ -1,6 +1,8 @@
 {
   "name": "movie-catalog",
   "version": "0.1.0",
+  "author": "one92tb",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
