@@ -79,9 +79,8 @@ const Movies: React.FC<Props> = (props) => {
       data.forEach((table) => {
         result.push(...table);
       });
+      setData(result);
       setLoading(false);
-      const sortedData = result.sort((a, b) => a.date - b.date);
-      setData(sortedData);
     });
   }, [videosData]);
 
