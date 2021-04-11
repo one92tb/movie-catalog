@@ -1,4 +1,4 @@
-export interface Data {
+export interface Movies {
     title: string,
     url: string,
     platform: string,

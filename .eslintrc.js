@@ -44,5 +44,6 @@ module.exports = {
     "import/prefer-default-export": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-non-null-assertion": 0,
+    "react-hooks/exhaustive-deps": "off",
   },
 };

@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Movies } from '../../interfaces/fetchData';
 import './style.css';
-import { VideosData } from '../../interfaces/videoData';
 
 interface Props {
-  videosData: VideosData[],
-  getCurrentPage: (value:number) => void,
+  displayData: Movies[],
+  setCurrentPage: (value:number) => void,
+  currentPage: number,
 }
 
 const Nav: React.FC<Props> = (props) => {
-  const { videosData, getCurrentPage } = props;
-  const [currentPage, setCurrentPage] = useState(0);
-  const pagesCount = Math.ceil(videosData.length / 6);
+  const { displayData, setCurrentPage, currentPage } = props;
+  const pagesCount = Math.ceil(displayData.length / 6);
 
   useEffect(() => {
-    getCurrentPage(currentPage);
-  }, [currentPage, getCurrentPage]);
+    setCurrentPage(currentPage);
+  }, [currentPage, setCurrentPage]);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, index: React.SetStateAction<number>) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, index: number) => {
     e.preventDefault();
     setCurrentPage(index);
   };
@@ -41,7 +41,7 @@ const Nav: React.FC<Props> = (props) => {
         </PaginationItem>
         {
           [...Array(pagesCount)].map((video, i) => (
-            <PaginationItem active={i === currentPage} key={videosData[i].date}>
+            <PaginationItem active={i === currentPage} key={displayData[i].date}>
               <PaginationLink onClick={(e) => handleClick(e, i)} href="#">
                 {i + 1}
               </PaginationLink>

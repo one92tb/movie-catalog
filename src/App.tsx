@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import './App.css';
 import { Col, Row } from 'reactstrap';
 import Formular from './components/Form/Form';
-import Movies from './components/Movies/Movies';
-import Nav from './components/Nav/Nav';
+import MovieList from './components/Movies/MovieList';
 import MyModal from './components/Modal/Modal';
 import Panel from './components/Panel/Panel';
 import useLocalStorage from './localStorage/localStorage';
 import { VideosData } from './interfaces/videoData';
 import { ModalData } from './interfaces/modalData';
+import { Movies } from './interfaces/fetchData';
 
 const App: React.FC = () => {
   const [videosData, setVideosData] = useLocalStorage<VideosData[]>('videosData', []);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [movies, setMovies] = useState<Movies[]>([]);
   const [modalData, setModalData] = useState<ModalData>({
     title: '',
     url: '',
@@ -24,10 +24,6 @@ const App: React.FC = () => {
     favorite: 'all',
     order: 'newest',
   });
-
-  const getCurrentPage = (index: React.SetStateAction<number>) => {
-    setCurrentPage(index);
-  };
 
   const getModalData = (data: React.SetStateAction<ModalData>) => {
     setModalData(data);
@@ -42,12 +38,13 @@ const App: React.FC = () => {
       <Formular videosData={videosData} setVideosData={setVideosData} />
       <Row>
         <Col md="10">
-          <Movies
+          <MovieList
             videosData={videosData}
             setVideosData={setVideosData}
-            currentPage={currentPage}
             panelData={panelData}
             getModalData={getModalData}
+            movies={movies}
+            setMovies={setMovies}
           />
         </Col>
         <Col md="2">
@@ -57,7 +54,6 @@ const App: React.FC = () => {
           />
         </Col>
       </Row>
-      <Nav videosData={videosData} getCurrentPage={getCurrentPage} />
       <MyModal
         modalData={modalData}
         onClose={onClose}
