@@ -42,16 +42,19 @@ const fetchYoutubeDataAll = async (data: PlatformData) => {
       part: 'snippet, statistics',
     },
   });
-  return res.data.items.map((video, index) => ({
-    title: video.snippet.title,
-    url: video.id,
-    viewCounts: video.statistics.viewCount,
-    likeCount: video.statistics.likeCount,
-    mediumThumbnail: video.snippet.thumbnails.high.url,
-    date: data.dates[index],
-    platform: data.platform,
-    isFavorite: data.isFavorite[index],
-  }));
+  return res.data.items.map((video) => {
+    const id: number = data.url.split(',').findIndex((url) => (video.id === url));
+    return ({
+      title: video.snippet.title,
+      url: video.id,
+      viewCounts: video.statistics.viewCount,
+      likeCount: video.statistics.likeCount,
+      mediumThumbnail: video.snippet.thumbnails.high.url,
+      date: data.dates[id],
+      platform: data.platform,
+      isFavorite: data.isFavorite[id],
+    });
+  });
 };
 
 const fetchVimeoDataByUrl = async (url: string) => {
@@ -71,16 +74,19 @@ const fetchVimeoDataAll = async (data: PlatformData) => {
       links: data.url,
     },
   });
-  return res.data.data.map((video, index) => ({
-    title: video.name,
-    viewCounts: video.stats.plays,
-    mediumThumbnail: video.pictures.sizes[3].link,
-    largeThumbnail: video.pictures.sizes[4].link,
-    url: video.link,
-    date: data.dates[index],
-    platform: data.platform,
-    isFavorite: data.isFavorite[index],
-  }));
+  return res.data.data.map((video) => {
+    const id: number = data.url.split(',').findIndex((url) => (video.link === url));
+    return ({
+      title: video.name,
+      viewCounts: video.stats.plays,
+      mediumThumbnail: video.pictures.sizes[3].link,
+      largeThumbnail: video.pictures.sizes[4].link,
+      url: video.link,
+      date: data.dates[id],
+      platform: data.platform,
+      isFavorite: data.isFavorite[id],
+    });
+  });
 };
 
 export const getApiClients: Record<string, VideoClient> = {

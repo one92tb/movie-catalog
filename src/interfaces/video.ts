@@ -18,6 +18,7 @@ interface YouTubeItem {
 }
 
 interface VimeoItem {
+  id: string;
   name: string;
   stats: {
     plays: number;
