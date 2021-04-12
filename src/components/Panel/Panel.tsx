@@ -39,7 +39,6 @@ const Panel: React.FC<Props> = (props) => {
 
   const loadDemo = () => {
     setVideosData(demo);
-    window.location.reload();
   };
 
   return (
