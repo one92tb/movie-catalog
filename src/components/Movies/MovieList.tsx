@@ -83,7 +83,7 @@ const MovieList: React.FC<Props> = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [videosData]);
 
   const displayData = ((inputValues.order === 'oldest')
     ? movies.sort((a, b) => a.date - b.date)
