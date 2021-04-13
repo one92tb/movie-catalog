@@ -51,7 +51,7 @@ const MovieCard: React.FC<Props> = (props) => {
   };
 
   return (
-    <Card className={`data-slice ${inputValues.display === 'vertical' ? 'card-horizontal' : ''}`}>
+    <Card data-testid="card" className={`data-slice ${inputValues.display === 'vertical' ? 'card-horizontal' : ''}`}>
       <CardHeader>
         <CardTitle tag="h4">{movie.title}</CardTitle>
       </CardHeader>
@@ -86,6 +86,7 @@ const MovieCard: React.FC<Props> = (props) => {
         </span>
         <span>
           <FontAwesomeIcon
+            data-testid="remove-icon"
             icon={faTrashAlt}
             onClick={() => remove(movie.date)}
           />
