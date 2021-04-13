@@ -26,7 +26,6 @@ const MovieList: React.FC<Props> = (props) => {
   const {
     setVideosData, getModalData, panelData, videosData, movies, setMovies,
   } = props;
-
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputValues, setInputValues] = useState<InputValues>({
@@ -103,6 +102,7 @@ const MovieList: React.FC<Props> = (props) => {
             (currentPage + 1) * 6,
           ).map((movie) => (
             <MovieCard
+              data-testid="movieCard"
               key={movie.date}
               setVideosData={setVideosData}
               getModalData={getModalData}

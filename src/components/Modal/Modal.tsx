@@ -32,6 +32,7 @@ const ModalInnerVideo: React.FC<Props> = (props) => {
 
   return (
     <Modal
+      data-testid="modal"
       className="modal-dialog modal-lg"
       isOpen={modalData.isOpen}
       modalTransition={{ timeout: 200 }}

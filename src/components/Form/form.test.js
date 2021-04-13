@@ -9,20 +9,6 @@ import Fromular from './Form';
 describe('fomular component', () => {
   MockDate.set('2021-04-13');
 
-  test('it should render Form component', () => {
-    const props = {
-      videosData: [
-        {
-          path: 'Jk7rliZpuSs', date: 1617974782332, platform: 'youtube', isFavorite: false,
-        }, {
-          path: 'TdJriJftSNc', date: 1617974903221, platform: 'youtube', isFavorite: false,
-        },
-      ],
-      setVideosData: jest.fn(),
-    };
-    render(<Fromular {...props} />);
-  });
-
   test('it should submit value from input', async () => {
     const props = {
       videosData: [

@@ -13,12 +13,12 @@ interface inputValues {
 }
 
 interface Props {
-  getPanelData: (value: inputValues) => void,
+  setPanelData: (value: inputValues) => void,
   setVideosData: (value: VideosData[]) => void,
 }
 
 const Panel: React.FC<Props> = (props) => {
-  const { getPanelData, setVideosData } = props;
+  const { setPanelData, setVideosData } = props;
   const [inputValues, setInputValues] = useState({
     display: 'vertical',
     favorite: 'all',
@@ -26,13 +26,12 @@ const Panel: React.FC<Props> = (props) => {
   });
 
   useEffect(() => {
-    getPanelData(inputValues);
-  }, [getPanelData, inputValues]);
+    setPanelData(inputValues);
+  }, [inputValues]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({ ...inputValues, [event.target.name]: event.target.value });
   };
-
   const removeAllData = () => {
     setVideosData([]);
   };
@@ -45,7 +44,14 @@ const Panel: React.FC<Props> = (props) => {
     <Form>
       <FormGroup>
         <Label for="display">Display</Label>
-        <Input type="select" className="form-control" name="display" onChange={(e) => handleChange(e)} id="display">
+        <Input
+          data-testid="display-select"
+          type="select"
+          className="form-control"
+          name="display"
+          onChange={(e) => handleChange(e)}
+          id="display"
+        >
           <option>vertical</option>
           <option>horizontal</option>
         </Input>

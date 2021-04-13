@@ -30,6 +30,7 @@ const Nav: React.FC<Props> = (props) => {
             onClick={(e) => handleClick(e, 0)}
             previous
             href="#"
+            data-testid="pagination-link"
           />
         </PaginationItem>
         <PaginationItem disabled={currentPage <= 0}>
@@ -37,12 +38,17 @@ const Nav: React.FC<Props> = (props) => {
             onClick={(e) => handleClick(e, currentPage - 1)}
             previous
             href="#"
+            data-testid="pagination-link"
           />
         </PaginationItem>
         {
           [...Array(pagesCount)].map((video, i) => (
             <PaginationItem active={i === currentPage} key={displayData[i].date}>
-              <PaginationLink onClick={(e) => handleClick(e, i)} href="#">
+              <PaginationLink
+                onClick={(e) => handleClick(e, i)}
+                href="#"
+                data-testid="pagination-link"
+              >
                 {i + 1}
               </PaginationLink>
             </PaginationItem>
@@ -50,6 +56,7 @@ const Nav: React.FC<Props> = (props) => {
         }
         <PaginationItem disabled={currentPage >= pagesCount - 1}>
           <PaginationLink
+            data-testid="pagination-link"
             onClick={(e) => handleClick(e, currentPage + 1)}
             next
             href="#"
@@ -57,6 +64,7 @@ const Nav: React.FC<Props> = (props) => {
         </PaginationItem>
         <PaginationItem>
           <PaginationLink
+            data-testid="pagination-link"
             onClick={(e) => handleClick(e, pagesCount - 1)}
             next
             href="#"

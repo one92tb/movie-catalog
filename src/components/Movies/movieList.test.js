@@ -9,18 +9,25 @@ describe('movieList component', () => {
       getModalData: jest.fn(),
       setMovies: jest.fn(),
       movies: [{
-        date: 1617974782332,
-        isFavorite: false,
-        likeCount: '1220094',
-        mediumThumbnail: 'https://i.ytimg.com/vi/Jk7rliZpuSs/hqdefault.jpg',
-        platform: 'youtube',
-        title: 'Urban Freeride Lives 3 - Fabio Wibmer',
-        url: 'Jk7rliZpuSs',
-        viewCounts: '66959908',
+        path: 'Jk7rliZpuSs', date: 1617974782332, platform: 'youtube', isFavorite: false,
+      }, {
+        path: 'TdJriJftSNc', date: 1617974903221, platform: 'youtube', isFavorite: false,
+      }, {
+        path: 'https://vimeo.com/431444293', date: 1617974916287, platform: 'vimeo', isFavorite: false,
+      }, {
+        path: 'https://vimeo.com/271064161', date: 1617974927483, platform: 'vimeo', isFavorite: false,
       }],
       videosData: [
         {
           path: 'Jk7rliZpuSs', date: 1617974782332, platform: 'youtube', isFavorite: false,
+        },
+        {
+          path: 'TdJriJftSNc', date: 1617974903221, platform: 'youtube', isFavorite: false,
+        },
+        {
+          path: 'https://vimeo.com/431444293', date: 1617974916287, platform: 'vimeo', isFavorite: false,
+        }, {
+          path: 'https://vimeo.com/271064161', date: 1617974927483, platform: 'vimeo', isFavorite: false,
         },
       ],
       panelData: { display: 'vertical', favorite: 'all', order: 'newest' },

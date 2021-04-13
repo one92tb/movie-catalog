@@ -49,7 +49,7 @@ const App: React.FC = () => {
         </Col>
         <Col md="2">
           <Panel
-            getPanelData={setPanelData}
+            setPanelData={setPanelData}
             setVideosData={setVideosData}
           />
         </Col>
