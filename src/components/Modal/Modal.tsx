@@ -64,11 +64,9 @@ const ModalInnerVideo: React.FC<Props> = (props) => {
   );
 };
 
-const ModalVideo = (props: Props) => ReactDOM.createPortal(
+export const ModalVideo = (props: Props) => ReactDOM.createPortal(
   // eslint-disable-next-line react/jsx-props-no-spreading
   <ModalInnerVideo {...props} />,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   document.getElementById('root')!,
 );
-
-export default ModalVideo;

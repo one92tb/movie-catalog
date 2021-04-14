@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { render } from '@testing-library/react';
-import MovieList from './MovieList';
+import { MovieList } from './MovieList';
 
 describe('movieList component', () => {
   test('it should render movies component', () => {

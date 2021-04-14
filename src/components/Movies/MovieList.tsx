@@ -4,25 +4,25 @@ import React, {
   useCallback,
 } from 'react';
 import './style.css';
-import MovieCard from './Movie';
-import Nav from '../Nav/Nav';
+import { MovieCard } from './Movie';
+import { Nav } from '../Nav/Nav';
 import { getApiClients } from '../../api/api';
 import { VideosData } from '../../interfaces/videoData';
 import { PanelData } from '../../interfaces/panelData';
 import { ModalData } from '../../interfaces/modalData';
-import { Movies } from '../../interfaces/fetchData';
+import { Video } from '../../interfaces/video';
 import { InputValues } from '../../interfaces/inputValues';
 
 interface Props {
   videosData: VideosData[],
   panelData: PanelData,
-  movies: Movies[];
+  movies: Video[];
   setVideosData: (value: VideosData[]) => void,
   getModalData: (value: ModalData) => void,
-  setMovies: (value: Movies[]) => void,
+  setMovies: (value: Video[]) => void,
 }
 
-const MovieList: React.FC<Props> = (props) => {
+export const MovieList: React.FC<Props> = (props) => {
   const {
     setVideosData, getModalData, panelData, videosData, movies, setMovies,
   } = props;
@@ -50,6 +50,7 @@ const MovieList: React.FC<Props> = (props) => {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
+
     const platformData = async (platform: string) => {
       const dataFromPlatform = videosData
         .filter((video) => video.platform === platform);
@@ -63,6 +64,7 @@ const MovieList: React.FC<Props> = (props) => {
         platform,
         isFavorite,
       };
+
       const client = getApiClients[platform];
       const resData = await client.getAll(platformData);
       return resData;
@@ -78,11 +80,17 @@ const MovieList: React.FC<Props> = (props) => {
       setLoading(false);
       setMovies(result);
     });
-  }, [videosData]);
+  }, []);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (videosData.length > movies.length) {
+      fetchData();
+    }
+  }, [videosData]);
 
   const displayData = ((inputValues.order === 'oldest')
     ? movies.sort((a, b) => a.date - b.date)
@@ -122,5 +130,3 @@ const MovieList: React.FC<Props> = (props) => {
     </div>
   );
 };
-
-export default MovieList;

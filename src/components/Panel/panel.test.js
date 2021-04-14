@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { demo } from '../../demo/demo';
-import Panel from './Panel';
+import { Panel } from './Panel';
 
 describe('panel component', () => {
   test('it should start setVideosData with empty table as a parameter when user is clicking  remove button', () => {

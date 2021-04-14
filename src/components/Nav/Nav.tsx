@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { Movies } from '../../interfaces/fetchData';
+import { Video } from '../../interfaces/video';
 import './style.css';
 
 interface Props {
-  displayData: Movies[],
+  displayData: Video[],
   setCurrentPage: (value:number) => void,
   currentPage: number,
 }
 
-const Nav: React.FC<Props> = (props) => {
+export const Nav: React.FC<Props> = (props) => {
   const { displayData, setCurrentPage, currentPage } = props;
   const pagesCount = Math.ceil(displayData.length / 6);
 
@@ -74,5 +74,3 @@ const Nav: React.FC<Props> = (props) => {
     </div>
   );
 };
-
-export default Nav;

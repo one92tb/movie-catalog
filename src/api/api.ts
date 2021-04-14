@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { YouTubeResponse, VimeoResponse, Video } from '../interfaces/video';
+import {
+  YouTubeResponse, VimeoResponse, Video,
+} from '../interfaces/video';
 import { PlatformData } from '../interfaces/platformData';
 
 interface VideoClient {
   getAll(data: PlatformData): Promise<Video[]>;
-  getData(url: string): Promise<string>;
+  getData(url: string): Promise<Video>;
 }
 
 const youtubeInstance = axios.create({
@@ -23,16 +25,30 @@ const vimeoInstance = axios.create({
 });
 
 const fetchYoutubeDataByUrl = async (url: string) => {
-  const res = await youtubeInstance.get<{
-    items: { id: { videoId: string } }[];
-  }>('/search', {
+  const res = await youtubeInstance.get<YouTubeResponse>('/videos', {
     params: {
-      q: url,
-      maxResults: 1,
+      id: url,
+      part: 'snippet, statistics',
     },
   });
-  const { videoId } = res.data.items[0].id;
-  return videoId;
+
+  const {
+    snippet,
+    id,
+    statistics,
+  } = res.data.items[0];
+
+  const record = {
+    title: snippet.title,
+    url: id,
+    viewCounts: statistics.viewCount,
+    likeCount: statistics.likeCount,
+    mediumThumbnail: snippet.thumbnails.high.url,
+    date: Date.now(),
+    platform: 'youtube',
+  };
+
+  return record;
 };
 
 const fetchYoutubeDataAll = async (data: PlatformData) => {
@@ -58,14 +74,30 @@ const fetchYoutubeDataAll = async (data: PlatformData) => {
 };
 
 const fetchVimeoDataByUrl = async (url: string) => {
-  const res = await vimeoInstance.get<{ data: { link: string }[] }>('/', {
+  const res = await vimeoInstance.get<VimeoResponse>('/', {
     params: {
       links: url,
     },
   });
 
-  const { link } = res.data.data[0];
-  return link;
+  const {
+    link,
+    pictures,
+    stats,
+    name,
+  } = res.data.data[0];
+
+  const record = {
+    title: name,
+    viewCounts: stats.plays,
+    mediumThumbnail: pictures.sizes[3].link,
+    largeThumbnail: pictures.sizes[4].link,
+    url: link,
+    date: Date.now(),
+    platform: 'viemo',
+  };
+
+  return record;
 };
 
 const fetchVimeoDataAll = async (data: PlatformData) => {

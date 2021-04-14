@@ -4,7 +4,7 @@ import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
 import MockDate from 'mockdate';
-import Fromular from './Form';
+import { Formular } from './Form';
 
 describe('fomular component', () => {
   MockDate.set('2021-04-13');
@@ -20,7 +20,7 @@ describe('fomular component', () => {
       ],
       setVideosData: jest.fn(),
     };
-    render(<Fromular {...props} />);
+    render(<Formular {...props} />);
 
     const input = screen.getByPlaceholderText('put a link to the input to add a video...');
     const button = screen.getByText('Submit');
@@ -52,7 +52,7 @@ describe('fomular component', () => {
       ],
       setVideosData: jest.fn(),
     };
-    render(<Fromular {...props} />);
+    render(<Formular {...props} />);
 
     const input = screen.getByPlaceholderText('put a link to the input to add a video...');
     const button = screen.getByText('Submit');
@@ -78,7 +78,7 @@ describe('fomular component', () => {
       ],
       setVideosData: jest.fn(),
     };
-    render(<Fromular {...props} />);
+    render(<Formular {...props} />);
 
     const input = screen.getByPlaceholderText('put a link to the input to add a video...');
     const button = screen.getByText('Submit');

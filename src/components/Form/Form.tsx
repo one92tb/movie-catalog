@@ -7,14 +7,23 @@ import { getApiClients } from '../../api/api';
 import './style.css';
 import type { ValidationResult } from '../../validate/validationDetails';
 import { VideosData } from '../../interfaces/videoData';
+import { Video } from '../../interfaces/video';
 
 interface Props {
-  videosData: VideosData[];
-  setVideosData: (value: VideosData[]) => void;
+  videosData: VideosData[],
+  setVideosData: (value: VideosData[]) => void,
+  movies: Video[],
+  setMovies: (value: Video[]) => void,
 }
 
-const Formular: React.FC<Props> = (props) => {
-  const { videosData, setVideosData } = props;
+export const Formular: React.FC<Props> = (props) => {
+  const {
+    videosData,
+    setVideosData,
+    setMovies,
+    movies,
+  } = props;
+
   const [link, setLink] = useState('');
   const [error, setError] = useState('');
 
@@ -40,11 +49,13 @@ const Formular: React.FC<Props> = (props) => {
     try {
       const result = await client.getData(link);
       const videoData = {
-        path: result,
-        date: Date.now(),
-        platform: validationResult.platform,
+        path: result.url,
+        date: result.date,
+        platform: result.platform,
         isFavorite: false,
       };
+
+      setMovies([...movies, result]);
       setVideosData([...videosData, videoData]);
     } catch (err) {
       setError('your link is invalid or this video is already uploaded');
@@ -68,5 +79,3 @@ const Formular: React.FC<Props> = (props) => {
     </Form>
   );
 };
-
-export default Formular;

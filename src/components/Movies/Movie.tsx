@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import {
   Card,
@@ -12,42 +13,48 @@ import {
   faClock, faEye, faStar, faTrashAlt, faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
-import { Movies } from '../../interfaces/fetchData';
 import { VideosData } from '../../interfaces/videoData';
 import { ModalData } from '../../interfaces/modalData';
 import { InputValues } from '../../interfaces/inputValues';
+import { Video } from '../../interfaces/video';
 
 interface Props {
     setVideosData: (value: VideosData[]) => void,
-    setMovies: (value: Movies[]) => void,
+    setMovies: (value: Video[]) => void,
     getModalData: (value: ModalData) => void,
     videosData: VideosData[],
-    movie: Movies,
-    movies: Movies[],
+    movie: Video,
+    movies: Video[],
     inputValues: InputValues,
 }
 
-const MovieCard: React.FC<Props> = (props) => {
+export const MovieCard: React.FC<Props> = (props) => {
   const {
     setVideosData, getModalData, setMovies, inputValues, movies, movie, videosData,
   } = props;
 
   const remove = (id: number) => {
-    const filterById = (video: Movies | VideosData) => video.date !== id;
-    const filteredMovies: Movies[] = movies.filter(filterById);
+    const filterById = (video: Video | VideosData) => video.date !== id;
+    const filteredMovies: Video[] = movies.filter(filterById);
     const filteredVideosData: VideosData[] = videosData.filter(filterById);
     setVideosData(filteredVideosData);
     setMovies(filteredMovies);
   };
 
   const addFavorite = (id: number) => {
-    const setFavorites = movies.map((video) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const setFavorite = ((video : any) => {
       if (video.date === id) {
-        return { ...video, isFavorite: !video.isFavorite };
+        video.isFavorite = !video.isFavorite;
+        return video;
       }
       return video;
     });
-    setMovies(setFavorites);
+
+    const favoriteMovies: Video[] = movies.map(setFavorite);
+    const favoritesVideosData: VideosData[] = videosData.map(setFavorite);
+    setMovies(favoriteMovies);
+    setVideosData(favoritesVideosData);
   };
 
   return (
@@ -102,5 +109,3 @@ const MovieCard: React.FC<Props> = (props) => {
     </Card>
   );
 };
-
-export default MovieCard;

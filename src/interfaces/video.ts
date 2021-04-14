@@ -1,4 +1,4 @@
-interface YouTubeItem {
+export interface YouTubeItem {
     id: string,
     snippet: {
       title: string;
@@ -17,7 +17,7 @@ interface YouTubeItem {
     };
 }
 
-interface VimeoItem {
+export interface VimeoItem {
   id: string;
   name: string;
   stats: {
@@ -41,7 +41,8 @@ export interface Video {
   mediumThumbnail: string;
   url: string;
   platform: string;
-  isFavorite: boolean;
+  isFavorite?: boolean;
+  likeCount?: number,
 }
 
 export interface VimeoResponse {

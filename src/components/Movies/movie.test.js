@@ -2,7 +2,7 @@
 import {
   fireEvent, render, screen,
 } from '@testing-library/react';
-import Movie from './Movie';
+import { Movie } from './Movie';
 
 describe('movie component', () => {
   test('it should render movies component', () => {

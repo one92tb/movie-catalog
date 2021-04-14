@@ -1,7 +1,7 @@
 /* eslint-disable spaced-comment */
 /* eslint-disable react/jsx-props-no-spreading */
-import { fireEvent, render, screen } from '@testing-library/react';
-import Nav from './Nav';
+import { render, screen } from '@testing-library/react';
+import { Nav } from './Nav';
 
 describe('panel component', () => {
   test('it should render nav component', () => {

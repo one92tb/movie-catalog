@@ -17,8 +17,10 @@ interface Props {
   setVideosData: (value: VideosData[]) => void,
 }
 
-const Panel: React.FC<Props> = (props) => {
-  const { setPanelData, setVideosData } = props;
+export const Panel: React.FC<Props> = (props) => {
+  const {
+    setPanelData, setVideosData,
+  } = props;
   const [inputValues, setInputValues] = useState({
     display: 'vertical',
     favorite: 'all',
@@ -75,5 +77,3 @@ const Panel: React.FC<Props> = (props) => {
     </Form>
   );
 };
-
-export default Panel;
